@@ -3,14 +3,14 @@ import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
 import Landing from './components/Landing/Landing';
 import Dashboard from './components/Dashboard/Dashboard';
-import SignupForm from './components/SignupForm/SignupForm';
-import SigninForm from './components/SigninForm/SigninForm';
-import * as authService from '../src/services/authService'; // import the authservice
+import SignupForm from './components/Authentication/SignupForm/SignupForm';
+import SigninForm from './components/Authentication/SigninForm/SigninForm';
+import * as authService from '../src/services/authService'; 
 
 export const AuthedUserContext = createContext(null);
 
 const App = () => {
-  const [user, setUser] = useState(authService.getUser()); // using the method from authservice
+  const [user, setUser] = useState(authService.getUser())
 
   const handleSignout = () => {
     authService.signout();

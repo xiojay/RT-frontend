@@ -7,8 +7,7 @@ const Dashboard = ({}) => {
     <main>
       <h1>Welcome, {user.username}</h1>
       <p>
-        This is the dashboard page where you, and only you, can see a dashboard
-        of all of your things.
+        Here you will see a list of your saved restaurants. 
       </p>
     </main>
   );

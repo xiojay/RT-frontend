@@ -1,0 +1,18 @@
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    text-align: center;
+    font-family: "Quicksand", serif;
+    padding: 2rem;
+  }
+  
+  main h3 {
+    font-size: 2rem;
+    color: #333333; 
+    margin: 0;
+    font-weight: bold;
+    line-height: 1.5;
+  }

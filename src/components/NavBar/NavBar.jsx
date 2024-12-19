@@ -1,38 +1,49 @@
 import { Link } from 'react-router-dom';
 import { AuthedUserContext } from '../../App';
 import { useContext } from 'react';
+import './NavBar.css';
+import RTLogo from '../../assets/Illustration5.jpg'; 
 
 const NavBar = ({ handleSignout }) => {
   const user = useContext(AuthedUserContext);
+
   return (
-    <>
-      {user ? (
-        <nav>
-          <ul>
-            <li>Welcome, {user.username}</li>
+    <nav className="navbar">
+
+      <div className="navbar-logo">
+        <Link to="/">
+          <img src={RTLogo} alt="RT Logo" />
+        </Link>
+      </div>
+
+      <ul className="navbar-links">
+        {user ? (
+          <>
+            <li className="navbar-welcome">Welcome, {user.username}</li>
             <li>
               <Link to="/">Dashboard</Link>
             </li>
             <li>
-              <Link to="" onClick={handleSignout}>
+              <Link to="/" onClick={handleSignout} className="signout-button">
                 Sign Out
               </Link>
             </li>
-          </ul>
-        </nav>
-      ) : (
-        <nav>
-          <ul>
+          </>
+        ) : (
+          <>
             <li>
               <Link to="/signin">Sign In</Link>
             </li>
             <li>
-              <Link to="/signup">Sign Up</Link>
+              <Link to="/signup" className="signup-button">
+                Sign Up
+              </Link>
             </li>
-          </ul>
-        </nav>
-      )}
-    </>
+          </>
+        )}
+      </ul>
+    </nav>
   );
 };
+
 export default NavBar;
