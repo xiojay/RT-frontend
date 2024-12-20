@@ -1,0 +1,86 @@
+.reviews-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+    font-family: 'Quicksand', serif;
+  }
+  
+  .review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .review-form input,
+  .review-form textarea {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .review-form button {
+    padding: 0.75rem;
+    font-size: 1rem;
+    background-color: #5a67d8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .review-form button:hover {
+    background-color: #434190;
+  }
+  
+  .review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .review-item {
+    background: #f9f9f9;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .review-item h3 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .review-item p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+  }
+  
+  .review-item button {
+    margin-right: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .review-item button:first-child {
+    background-color: #5a67d8;
+    color: white;
+  }
+  
+  .review-item button:first-child:hover {
+    background-color: #434190;
+  }
+  
+  .review-item button:last-child {
+    background-color: #e53e3e;
+    color: white;
+  }
+  
+  .review-item button:last-child:hover {
+    background-color: #c53030;
+  }
+  

@@ -26,26 +26,31 @@ const SignupForm = ({ setUser }) => {
       return
     }
 
-    try {
-      const response = await fetch('http://localhost:5000/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
-      });
+  //   try {
+  //     const response = await fetch('http://localhost:5000/signup', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ username, email, password }),
+  //     });
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error)
-      }
+  //     if (!response.ok) {
+  //       throw new Error(data.error)
+  //     }
 
-      localStorage.setItem('token', data.token)
-      setUser(data.user)
-      navigate('/')
-    } catch (err) {
-      setMessage(err.message)
-    }
-  };
+  //     localStorage.setItem('token', data.token)
+  //     setUser(data.user)
+  //     navigate('/')
+  //   } catch (err) {
+  //     setMessage(err.message)
+  //   }
+  // };
+
+  setMessage('Account created successfully!'); 
+  setUser({ username, email }); 
+  navigate('/'); 
+};
 
   return (
     <main className="auth-container">

@@ -1,0 +1,158 @@
+.restaurant-details {
+    font-family: "Quicksand", serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  
+  .restaurant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .restaurant-header-left h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .restaurant-rating {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .restaurant-rating span {
+    margin-right: 0.5rem;
+    color: #fbb034; 
+  }
+  
+  .rating-count {
+    color: #555;
+  }
+  
+  .restaurant-category {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  
+  .action-button {
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    background-color: #5a67d8;
+    color: #fff;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .action-button:hover {
+    background-color: #434190;
+  }
+  
+  .restaurant-info-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  
+  .restaurant-address {
+    flex: 1;
+    font-size: 1rem;
+  }
+  
+  .restaurant-address p {
+    margin: 0.5rem 0;
+  }
+  
+  .edit-link {
+    font-size: 0.9rem;
+    color: #5a67d8;
+    text-decoration: none;
+  }
+  
+  .edit-link:hover {
+    text-decoration: underline;
+  }
+  
+  .restaurant-photos {
+    flex: 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .restaurant-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  
+  .see-more-link {
+    grid-column: span 3;
+    text-align: right;
+    font-size: 0.9rem;
+    color: #5a67d8;
+    text-decoration: none;
+  }
+  
+  .see-more-link:hover {
+    text-decoration: underline;
+  }
+  
+  .restaurant-details-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  
+  .hours, .price-range {
+    flex: 1;
+  }
+  
+  .hours p, .price-range p {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+  }
+  
+  .menu-link {
+    font-size: 0.9rem;
+    color: #5a67d8;
+    text-decoration: none;
+  }
+  
+  .menu-link:hover {
+    text-decoration: underline;
+  }
+  
+  .featured-reviews {
+    margin-top: 1rem;
+  }
+  .review {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .review p {
+    margin: 0.5rem 0;
+  }
+  
+  .review a {
+    color: #5a67d8;
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+  
+  .review a:hover {
+    text-decoration: underline;
+  }
+  

@@ -1,0 +1,127 @@
+/* Review Form Container */
+.review-form {
+    max-width: 600px;
+    margin: 2rem auto;
+    font-family: "Quicksand", serif;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading */
+  .review-form h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+    text-align: center;
+  }
+  
+  /* Star Rating */
+  .rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .star {
+    font-size: 2rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .star.selected {
+    color: #fbb034; /* Gold color for selected stars */
+  }
+  
+  .rating-label {
+    font-size: 1rem;
+    color: #555;
+    margin-left: 1rem;
+  }
+  
+  /* Categories */
+  .categories {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .categories p {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .category {
+    display: inline-block;
+    margin: 0 0.3rem;
+    padding: 0.5rem 1rem;
+    background-color: #f3f4f6;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .category.active {
+    background-color: #5a67d8; /* Active color */
+    color: #fff;
+    border-color: #5a67d8;
+  }
+  
+  .category:hover {
+    background-color: #e2e8f0;
+  }
+  
+  /* Textarea */
+  textarea {
+    width: 100%;
+    height: 120px;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: "Quicksand", serif;
+    resize: none;
+    margin-bottom: 1.5rem;
+    box-sizing: border-box;
+    color: #333;
+  }
+  
+  textarea::placeholder {
+    color: #aaa;
+  }
+  
+  textarea:focus {
+    outline: none;
+    border-color: #5a67d8;
+    box-shadow: 0 0 4px rgba(90, 103, 216, 0.3);
+  }
+  
+  /* Submit Button */
+  .submit-button {
+    display: inline-block;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #5a67d8;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #434190;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
