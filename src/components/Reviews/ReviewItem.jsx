@@ -8,7 +8,7 @@ const ReviewItem = ({ review, onEdit, onDelete }) => {
 
   const handleEdit = async (updatedReview) => {
     try {
-      const response = await fetch(`http://localhost:5000/reviews/${review.id}`, {
+      const response = await fetch(`http://localhost:3000/reviews/${review.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const ReviewItem = ({ review, onEdit, onDelete }) => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/reviews/${review.id}`, {
+      const response = await fetch(`http://localhost:3000/reviews/${review.id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`, 

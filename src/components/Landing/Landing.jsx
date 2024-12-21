@@ -8,7 +8,7 @@ const Landing = () => {
   useEffect(() => {
     const fetchFeaturedRestaurants = async () => {
       try {
-        const response = await fetch('http://localhost:3000/restaurants/featured');
+        const response = await fetch('http://localhost:3000/restaurant/featured');
 
         const data = await response.json();
 

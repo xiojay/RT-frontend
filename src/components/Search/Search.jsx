@@ -22,7 +22,7 @@ const Search = ({ placeholder }) => {
       setErrorMessage('');
 
       // Fetch search results from the backend
-      const response = await fetch(`http://localhost:5000/restaurants/search?query=${encodeURIComponent(value)}`);
+      const response = await fetch(`http://localhost:3000/restaurants/search?query=${encodeURIComponent(value)}`);
       const data = await response.json();
 
       if (!response.ok) {
@@ -56,7 +56,7 @@ const Search = ({ placeholder }) => {
         ) : filteredResults.length > 0 ? (
           filteredResults.map((result) => (
             <li key={result.id} className="search-result-item">
-              <Link to={`/restaurants/${result.id}`}>
+              <Link to={`/restaurants/${result._id}`}>
                 <h3>{result.name}</h3>
                 <p><strong>Cuisine:</strong> {result.cuisine}</p>
                 <p><strong>Location:</strong> {result.location}</p>

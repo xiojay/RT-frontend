@@ -11,7 +11,7 @@ const Reviews = ({ restaurantId }) => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/restaurants/${restaurantId}/reviews`);
+        const response = await fetch(`http://localhost:3000/restaurant/${restaurantId}/reviews`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -30,7 +30,7 @@ const Reviews = ({ restaurantId }) => {
   // Add a new review
   const addReview = async (newReview) => {
     try {
-      const response = await fetch(`http://localhost:5000/restaurants/${restaurantId}/reviews`, {
+      const response = await fetch(`http://localhost:3000/restaurant/${restaurantId}/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const Reviews = ({ restaurantId }) => {
   // Update an existing review
   const updateReview = async (id, updatedReview) => {
     try {
-      const response = await fetch(`http://localhost:5000/reviews/${id}`, {
+      const response = await fetch(`http://localhost:3000/reviews/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ const Reviews = ({ restaurantId }) => {
   // Delete a review
   const deleteReview = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/reviews/${id}`, {
+      const response = await fetch(`http://localhost:3000/reviews/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

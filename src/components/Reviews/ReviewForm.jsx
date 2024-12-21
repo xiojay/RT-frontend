@@ -20,7 +20,7 @@ const ReviewForm = ({ onSubmit, data, existingReview }) => {
       setFormData({
         rating: existingReview.rating || 0,
         categories: existingReview.categories || { food: false, service: false, ambiance: false },
-        reviewText: existingReview.reviewText || '',
+        details: existingReview.details || '',
       });
     }
   }, [existingReview]);
@@ -40,7 +40,7 @@ const ReviewForm = ({ onSubmit, data, existingReview }) => {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, reviewText: e.target.value })
+    setFormData({ ...formData, details: e.target.value })
   };
 
   const handleSubmit = async (e) => {
@@ -53,15 +53,19 @@ const ReviewForm = ({ onSubmit, data, existingReview }) => {
 
     try {
       // Post review to the backend
-      const response = await fetch(`http://localhost:5000/restaurants/${id}/reviews`, {
-        method: existingReview ? 'PUT' : 'POST', 
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
+        const url = existingReview
+        ? `http://localhost:3000/reviews/restaurant/${id}/reviews/${existingReview._id}` 
+        : `http://localhost:3000/reviews/restaurant/${id}/reviews`;
+        const method = existingReview ? 'PUT' : 'POST';
+      const response = await fetch(url, {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       const result = await response.json()
 
       if (!response.ok) {
@@ -117,7 +121,7 @@ const ReviewForm = ({ onSubmit, data, existingReview }) => {
 
         <textarea
           placeholder="Start your review..."
-          value={formData.reviewText}
+          value={formData.details}
           onChange={handleChange}
           required
         />

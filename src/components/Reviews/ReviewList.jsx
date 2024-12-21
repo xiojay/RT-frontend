@@ -10,7 +10,7 @@ const ReviewList = ({ restaurantId, onEdit, onDelete }) => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/restaurants/${restaurantId}/reviews`);
+        const response = await fetch(`http://localhost:3000/restaurant/${restaurantId}/reviews`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch reviews');

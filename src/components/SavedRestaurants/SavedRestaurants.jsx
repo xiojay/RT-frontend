@@ -8,7 +8,7 @@ const SavedRestaurants = () => {
   useEffect(() => {
     const fetchSavedRestaurants = async () => {
       try {
-        const response = await fetch('http://localhost:5000/saved-restaurants', {
+        const response = await fetch('http://localhost:3000/saved-restaurants', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -30,6 +30,18 @@ const SavedRestaurants = () => {
 
     fetchSavedRestaurants();
   }, []);
+  const handleSave = async (restaurantId) => {
+    try{ 
+      const res = await fetch (`http://localhost:3000/restaurants/${restaurantId}/save`, {
+        method: 'POST',
+        headers: {Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content Type': 'application/json',
+    }})
+    res.json()
+    }catch(error){
+      setErrorMessage(err.message || 'Can not save restaurants' );
+    }
+  }
 
   if (loading) {
     return <p>Loading saved restaurants...</p>;

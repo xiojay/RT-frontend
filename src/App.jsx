@@ -29,13 +29,13 @@ const App = () => {
       setLoading(true)
       try {
         const token = localStorage.getItem('token')
-        if (!token) {
-          throw new Error('User is not authenticated. No token found.')
-        }
+//       if (!token) {
+ //         throw new Error('User is not authenticated. No token found.')
+ //       }
 
-        const response = await fetch('http://localhost:3000/restaurants', {
+        const response = await fetch('http://localhost:3000/restaurants/featured', {
           headers: {
-            Authorization: `Bearer ${token}`,
+//            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -93,7 +93,7 @@ const App = () => {
           />
 
           <Route
-            path="/restaurants/:id/write-review"
+            path="/restaurants/:id/reviews"
             element={
               user ? (
                 <ReviewForm
