@@ -1,18 +1,77 @@
-main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; 
-    text-align: center;
-    font-family: "Quicksand", serif;
-    padding: 2rem;
-  }
-  
-  main h3 {
-    font-size: 2rem;
-    color: #333333; 
-    margin: 0;
-    font-weight: bold;
-    line-height: 1.5;
-  }
+/* General Landing Page Styles */
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  text-align: center;
+  font-family: "Quicksand", serif;
+  padding: 2rem;
+  background-color: #f9f9f9; /* Optional: background for the landing page */
+}
+
+.landing-container h3 {
+  font-size: 2rem;
+  color: #333333; 
+  margin: 0;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+/* Featured Restaurants Section */
+.featured-restaurants {
+  margin-top: 2rem;
+  max-width: 600px;
+  width: 100%;
+}
+
+.featured-restaurants h4 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #5a67d8; /* Accent color */
+  text-align: center;
+}
+
+.featured-restaurants ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.featured-restaurants li {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  text-align: left;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.featured-restaurants li h5 {
+  font-size: 1.2rem;
+  color: #333333;
+  margin: 0 0 0.5rem 0;
+  font-weight: bold;
+}
+
+.featured-restaurants li p {
+  margin: 0;
+  font-size: 1rem;
+  color: #555555;
+}
+
+/* Error Message */
+.error-message {
+  color: #e53e3e;
+  font-size: 1rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* Optional Hover Effect */
+.featured-restaurants li:hover {
+  background-color: #f3f4f6;
+  transition: background-color 0.3s ease;
+}

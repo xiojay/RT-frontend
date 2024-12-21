@@ -5,7 +5,7 @@ import '../auth.css';
 
 const SignupForm = ({ setUser }) => {
   const navigate = useNavigate();
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -15,46 +15,43 @@ const SignupForm = ({ setUser }) => {
 
   const handleChange = (e) => {
     setMessage('');
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { username, email, password, passwordConf } = formData
+    const { username, email, password, passwordConf } = formData;
+
     if (password !== passwordConf) {
-      setMessage('Passwords do not match, try again.')
-      return
+      setMessage('Passwords do not match, try again.');
+      return;
     }
 
-  //   try {
-  //     const response = await fetch('http://localhost:5000/signup', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ username, email, password }),
-  //     });
+    try {
+      
+      const response = await fetch('/api/users/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
+      });
 
-  //     const data = await response.json();
+      const data = await response.json();
 
-  //     if (!response.ok) {
-  //       throw new Error(data.error)
-  //     }
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create an account.');
+      }
 
-  //     localStorage.setItem('token', data.token)
-  //     setUser(data.user)
-  //     navigate('/')
-  //   } catch (err) {
-  //     setMessage(err.message)
-  //   }
-  // };
-
-  setMessage('Account created successfully!'); 
-  setUser({ username, email }); 
-  navigate('/'); 
-};
+      localStorage.setItem('token', data.token);
+      setUser(data.user);
+      navigate('/'); 
+    } catch (err) {
+      setMessage(err.message)
+    }
+  };
 
   return (
     <main className="auth-container">
-    <img src={RTLogo} alt="RT Logo" className="auth-logo" />
+      <img src={RTLogo} alt="RT Logo" className="auth-logo" />
       <h1>Sign Up</h1>
       {message && <p className="error-message">{message}</p>}
       <form onSubmit={handleSubmit}>

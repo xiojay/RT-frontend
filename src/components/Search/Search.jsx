@@ -2,21 +2,38 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import './Search.css';
 
-const Search = ({ placeholder, data }) => {
+const Search = ({ placeholder }) => {
   const [query, setQuery] = useState('');
   const [filteredResults, setFilteredResults] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = async (e) => {
     const value = e.target.value;
     setQuery(value);
 
-    if (data) {
-      const filtered = data.filter((item) =>
-        item.name.toLowerCase().includes(value.toLowerCase()) ||
-        item.cuisine.toLowerCase().includes(value.toLowerCase()) ||
-        item.location.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredResults(filtered);
+    if (value.trim() === '') {
+      setFilteredResults([]);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setErrorMessage('');
+
+      // Fetch search results from the backend
+      const response = await fetch(`http://localhost:5000/restaurants/search?query=${encodeURIComponent(value)}`);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to fetch search results.');
+      }
+
+      setFilteredResults(data);
+    } catch (error) {
+      setErrorMessage(error.message || 'An error occurred while fetching search results.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -32,8 +49,11 @@ const Search = ({ placeholder, data }) => {
           className="search-input"
         />
       </div>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <ul className="search-results">
-        {filteredResults.length > 0 ? (
+        {loading ? (
+          <li className="loading-message">Loading results...</li>
+        ) : filteredResults.length > 0 ? (
           filteredResults.map((result) => (
             <li key={result.id} className="search-result-item">
               <Link to={`/restaurants/${result.id}`}>

@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import './ReviewForm.css';
 
 const ReviewForm = ({ onSubmit, data }) => {
-  const { id } = useParams(); // Get the restaurant ID from the URL
-  const restaurant = data.find((rest) => rest.id === parseInt(id)); // Find the restaurant based on the ID
+  const { id } = useParams();
+  const restaurant = data.find((rest) => rest.id === parseInt(id))
 
   const [formData, setFormData] = useState({
     rating: 0,
@@ -12,43 +12,71 @@ const ReviewForm = ({ onSubmit, data }) => {
     reviewText: '',
   });
 
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
   // Star rating descriptions
   const ratingDescriptions = ["Not Good", "Not the Best", "Decent", "Good", "Amazing"];
 
   const handleRatingChange = (rating) => {
-    setFormData({ ...formData, rating });
+    setFormData({ ...formData, rating })
   };
 
   const handleCategoryChange = (category) => {
     setFormData({
       ...formData,
       categories: { ...formData.categories, [category]: !formData.categories[category] },
-    });
+    })
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, reviewText: e.target.value });
+    setFormData({ ...formData, reviewText: e.target.value })
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
     if (formData.rating === 0) {
-      alert('Please select a rating');
+      alert('Please select a rating')
       return;
     }
-    onSubmit(formData);
-    setFormData({
-      rating: 0,
-      categories: { food: false, service: false, ambiance: false },
-      reviewText: '',
-    });
+
+    try {
+      // Post review to the backend
+      const response = await fetch(`http://localhost:5000/restaurants/${id}/reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit the review')
+      }
+
+      setMessage('Review submitted successfully!')
+      onSubmit(formData); 
+      setFormData({
+        rating: 0,
+        categories: { food: false, service: false, ambiance: false },
+        reviewText: '',
+      });
+    } catch (err) {
+      setError(err.message || 'An error occurred while submitting the review.')
+    }
   };
 
   return (
     <div className="review-form-container">
       <h1>Write a Review for {restaurant?.name || "the restaurant"}</h1>
+      {message && <p className="success-message">{message}</p>}
+      {error && <p className="error-message">{error}</p>}
       <form className="review-form" onSubmit={handleSubmit}>
-        {/* Star Rating */}
+        
         <div className="rating">
           {[1, 2, 3, 4, 5].map((star) => (
             <span
@@ -64,7 +92,6 @@ const ReviewForm = ({ onSubmit, data }) => {
           </span>
         </div>
 
-        {/* Review Categories */}
         <div className="categories">
           <p>A few things to consider in your review:</p>
           <button
@@ -90,7 +117,6 @@ const ReviewForm = ({ onSubmit, data }) => {
           </button>
         </div>
 
-        {/* Review Textarea */}
         <textarea
           placeholder="Start your review..."
           value={formData.reviewText}
@@ -98,7 +124,6 @@ const ReviewForm = ({ onSubmit, data }) => {
           required
         />
 
-        {/* Submit Button */}
         <button type="submit" className="submit-button">
           Post Review
         </button>

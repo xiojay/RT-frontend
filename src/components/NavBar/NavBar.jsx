@@ -7,6 +7,16 @@ import RTLogo from '../../assets/Illustration5.jpg';
 const NavBar = ({ handleSignout }) => {
   const user = useContext(AuthedUserContext);
 
+  const handleLogout = async () => {
+    try {
+      localStorage.removeItem('token');
+
+      handleSignout();
+    } catch (error) {
+      console.error('Error during sign-out:', error)
+    }
+  };
+
   return (
     <nav className="navbar">
 
@@ -27,14 +37,18 @@ const NavBar = ({ handleSignout }) => {
               <Link to="/search" className="search-link">Search</Link>
             </li>
             <li>
-              <Link to="/" onClick={handleSignout} className="signout-button">
+              <Link
+                to="/"
+                onClick={handleLogout}
+                className="signout-button"
+              >
                 Sign Out
               </Link>
             </li>
           </>
         ) : (
           <>
-           <li>
+            <li>
               <Link to="/search" className="search-link">Search</Link>
             </li>
             <li>

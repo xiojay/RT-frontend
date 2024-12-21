@@ -1,14 +1,11 @@
-import { AuthedUserContext } from '../../App';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const Dashboard = () => {
-  const user = useContext(AuthedUserContext);
+const SavedRestaurants = () => {
   const [savedRestaurants, setSavedRestaurants] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) return;
-
     const fetchSavedRestaurants = async () => {
       try {
         const response = await fetch('http://localhost:5000/saved-restaurants', {
@@ -24,42 +21,39 @@ const Dashboard = () => {
         }
 
         setSavedRestaurants(data);
-      } catch (error) {
-        setErrorMessage(error.message)
+        setLoading(false);
+      } catch (err) {
+        setErrorMessage(err.message || 'An error occurred while fetching saved restaurants.')
+        setLoading(false);
       }
     };
 
     fetchSavedRestaurants();
-  }, [user]);
+  }, []);
 
-  if (!user) {
-    return (
-      <main>
-        <h1>You must be logged in to view this page.</h1>
-      </main>
-    );
+  if (loading) {
+    return <p>Loading saved restaurants...</p>;
   }
 
   return (
-    <main>
-      <h1>Welcome, {user.username}</h1>
-      <p>Here you will see a list of your saved restaurants:</p>
+    <div>
+      <h1>Saved Restaurants</h1>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       {savedRestaurants.length > 0 ? (
-        <ul>
+        <div className="saved-restaurants-list">
           {savedRestaurants.map((restaurant) => (
-            <li key={restaurant._id}>
-              <h3>{restaurant.name}</h3>
-              <p>{restaurant.address}</p>
-              <p>{restaurant.cuisine}</p>
-            </li>
+            <div key={restaurant._id} className="saved-restaurant-item">
+              <h2>{restaurant.name}</h2>
+              <p><strong>Address:</strong> {restaurant.address}</p>
+              <p><strong>Cuisine:</strong> {restaurant.cuisine}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
-        <p>You haven't saved any restaurants yet.</p>
+        <p>No saved restaurants yet.</p>
       )}
-    </main>
+    </div>
   );
 };
 
-export default Dashboard;
+export default SavedRestaurants;

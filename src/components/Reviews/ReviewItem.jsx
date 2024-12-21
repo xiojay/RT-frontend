@@ -3,14 +3,60 @@ import ReviewForm from './ReviewForm';
 
 const ReviewItem = ({ review, onEdit, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const handleEdit = (updatedReview) => {
-    onEdit(review.id, updatedReview);
-    setIsEditing(false);
+  const handleEdit = async (updatedReview) => {
+    try {
+      const response = await fetch(`http://localhost:5000/reviews/${review.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`, 
+        },
+        body: JSON.stringify(updatedReview),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to update the review.');
+      }
+
+      setSuccessMessage('Review updated successfully!');
+      onEdit(review.id, updatedReview); 
+      setIsEditing(false);
+    } catch (error) {
+      setErrorMessage(error.message || 'An error occurred while updating the review.');
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/reviews/${review.id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`, 
+        },
+      });
+
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.error || 'Failed to delete the review.');
+      }
+
+      setSuccessMessage('Review deleted successfully!');
+      onDelete(review.id); 
+    } catch (error) {
+      setErrorMessage(error.message || 'An error occurred while deleting the review.');
+    }
   };
 
   return (
     <div className="review-item">
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {successMessage && <p className="success-message">{successMessage}</p>}
+
       {isEditing ? (
         <ReviewForm existingReview={review} onSubmit={handleEdit} />
       ) : (
@@ -19,7 +65,7 @@ const ReviewItem = ({ review, onEdit, onDelete }) => {
           <p><strong>Rating:</strong> {review.rating}</p>
           <p>{review.details}</p>
           <button onClick={() => setIsEditing(true)}>Edit</button>
-          <button onClick={() => onDelete(review.id)}>Delete</button>
+          <button onClick={handleDelete}>Delete</button>
         </>
       )}
     </div>
