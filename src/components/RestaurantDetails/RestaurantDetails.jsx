@@ -11,13 +11,13 @@ const RestaurantDetails = () => {
   useEffect(() => {
     const fetchRestaurant = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/restaurants/${id}`)
+        const response = await fetch(`http://localhost:3000/restaurants/${id}`);
 
         if (!response.ok) {
-          throw new Error('Failed to fetch restaurant details')
+          throw new Error('Failed to fetch restaurant details');
         }
 
-        const data = await response.json()
+        const data = await response.json();
         setRestaurant(data);
         setLoading(false);
       } catch (error) {
@@ -30,40 +30,49 @@ const RestaurantDetails = () => {
   }, [id]);
 
   if (loading) {
-    return <h2>Loading...</h2>
+    return <h2>Loading...</h2>;
   }
 
   if (errorMessage) {
-    return <h2>{errorMessage}</h2>
+    return <h2>{errorMessage}</h2>;
   }
 
   if (!restaurant) {
-    return <h2>Restaurant not found</h2>
+    return <h2>Restaurant not found</h2>;
   }
+
+  // Ensure reviews and other properties are safely accessed
+  const reviews = restaurant.reviews || [];
+
   const handleEditReview = (review) => {
-    // Logic to pre-fill the review form for editing
     console.log('Edit review:', review);
   };
+
   const handleDeleteReview = async (reviewId) => {
-      try {
-          const response = await fetch(`http://localhost:3000/reviews/${reviewId}`, {
-            method: 'DELETE',
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-    
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to delete review.');
-        }
-    
-  // Logic to update the UI after successful deletion
-        console.log('Review deleted successfully.');
-      } catch (error) {
-          console.error('Error deleting review:', error.message);
-        }
-      };
+    try {
+      const response = await fetch(`http://localhost:3000/reviews/${reviewId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete review.');
+      }
+
+      // Logic to update the UI after successful deletion
+      setRestaurant((prev) => ({
+        ...prev,
+        reviews: reviews.filter((review) => review._id !== reviewId),
+      }));
+
+      console.log('Review deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting review:', error.message);
+    }
+  };
 
   return (
     <div className="restaurant-details">
@@ -71,13 +80,13 @@ const RestaurantDetails = () => {
         <div className="restaurant-header-left">
           <h1>{restaurant.name}</h1>
           <div className="restaurant-rating">
-            <span>{'★'.repeat(Math.round(restaurant.rating))}</span>
+            <span>{'★'.repeat(Math.round(restaurant.rating || 0))}</span>
             <span className="rating-count">
-              {restaurant.rating} ({restaurant.reviews.length} reviews)
+              {restaurant.rating || 0} ({reviews.length} reviews)
             </span>
           </div>
           <p className="restaurant-category">
-            {restaurant.cuisine} • {restaurant.priceRange}
+            {restaurant.cuisine || 'N/A'} • {restaurant.priceRange || 'N/A'}
           </p>
         </div>
         <div className="restaurant-header-right">
@@ -95,11 +104,11 @@ const RestaurantDetails = () => {
 
       <div className="restaurant-info-section">
         <div className="restaurant-address">
-          <p>{restaurant.address}</p>
+          <p>{restaurant.address || 'Address not available'}</p>
           <p>
-            {restaurant.city}, {restaurant.state}
+            {restaurant.city || ''}, {restaurant.state || ''}
           </p>
-          <p>{restaurant.phone}</p>
+          <p>{restaurant.phone || 'Phone not available'}</p>
           <Link to="#" className="edit-link">
             Edit
           </Link>
@@ -128,7 +137,7 @@ const RestaurantDetails = () => {
       <div className="restaurant-details-section">
         <div className="hours">
           <p>
-            Today: <span>{restaurant.hours}</span>
+            Today: <span>{restaurant.hours || 'Hours not available'}</span>
           </p>
           <Link to="#" className="menu-link">
             Full Menu
@@ -138,33 +147,34 @@ const RestaurantDetails = () => {
 
       <h2>Featured Reviews</h2>
       <div className="featured-reviews">
-        {restaurant.reviews && restaurant.reviews.length > 0 ? (
-          restaurant.reviews.slice(0, 3).map((review, index) => (
+        {reviews.length > 0 ? (
+          reviews.slice(0, 3).map((review, index) => (
             <div key={index} className="review">
+               <p>
+                <strong>{review.user?.username || 'Anonymous'}</strong> 
+              </p>
               <p>{review.details}</p>
-              {review.highlight && <Link to="#">{review.highlight}</Link>}
-             
-                <div className="review-actions">
-                  <button
-                    onClick={() => handleEditReview(review)}
-                    className="action-link"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDeleteReview(review._id)}
-                    className="action-link delete"
-                  >
-                    Delete
-                  </button>
-                </div>
-              
+              <p>Rating: {review.rating}</p>
+              <div className="review-actions">
+                <button
+                  onClick={() => handleEditReview(review)}
+                  className="action-link"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDeleteReview(review._id)}
+                  className="action-link delete"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))
         ) : (
           <p>
             No reviews yet. Be the first to{' '}
-            <Link to={`/restaurant/${restaurant._id}/reviews`}>
+            <Link to={`/restaurants/${restaurant._id}/reviews`}>
               write a review
             </Link>
             !

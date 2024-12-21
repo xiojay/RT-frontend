@@ -1,0 +1,75 @@
+/* General Dashboard Styles */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    font-family: "Quicksand", serif;
+    padding: 2rem;
+    background-color: #f9f9f9; /* Match the landing page background */
+  }
+  
+  .dashboard-container h1 {
+    font-size: 2.5rem;
+    color: #333333;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+  
+  .dashboard-container p {
+    font-size: 1.2rem;
+    color: #555555;
+    margin-bottom: 2rem;
+  }
+  
+  /* Saved Restaurants Section */
+  .saved-restaurants {
+    max-width: 800px;
+    width: 100%;
+  }
+  
+  .saved-restaurants ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .saved-restaurants li {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    text-align: left;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .saved-restaurants li h3 {
+    font-size: 1.5rem;
+    color: #333333;
+    margin: 0 0 0.5rem;
+    font-weight: bold;
+  }
+  
+  .saved-restaurants li p {
+    margin: 0;
+    font-size: 1rem;
+    color: #555555;
+  }
+  
+  /* Error Message */
+  .error-message {
+    color: #e53e3e;
+    font-size: 1rem;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  /* Optional Hover Effect */
+  .saved-restaurants li:hover {
+    background-color: #f3f4f6;
+    transition: background-color 0.3s ease;
+  }
+  
