@@ -91,6 +91,5 @@ const SigninForm = (props) => {
     </main>
   );
 };
-console.log(localStorage.getItem('token'));
 
 export default SigninForm;
