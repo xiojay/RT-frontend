@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './ReviewForm.css';
 
-const ReviewForm = ({ onSubmit, data }) => {
+const ReviewForm = ({ onSubmit, data, existingReview }) => {
   const { id } = useParams();
-  const restaurant = data.find((rest) => rest.id === parseInt(id))
+  const restaurant = data.find((rest) => rest.id === parseInt(id));
 
   const [formData, setFormData] = useState({
     rating: 0,
@@ -15,8 +15,18 @@ const ReviewForm = ({ onSubmit, data }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    if (existingReview) {
+      setFormData({
+        rating: existingReview.rating || 0,
+        categories: existingReview.categories || { food: false, service: false, ambiance: false },
+        reviewText: existingReview.reviewText || '',
+      });
+    }
+  }, [existingReview]);
+
   // Star rating descriptions
-  const ratingDescriptions = ["Not Good", "Not the Best", "Decent", "Good", "Amazing"];
+  const ratingDescriptions = ['Not Good', 'Not the Best', 'Decent', 'Good', 'Amazing'];
 
   const handleRatingChange = (rating) => {
     setFormData({ ...formData, rating })
@@ -26,7 +36,7 @@ const ReviewForm = ({ onSubmit, data }) => {
     setFormData({
       ...formData,
       categories: { ...formData.categories, [category]: !formData.categories[category] },
-    })
+    });
   };
 
   const handleChange = (e) => {
@@ -44,7 +54,7 @@ const ReviewForm = ({ onSubmit, data }) => {
     try {
       // Post review to the backend
       const response = await fetch(`http://localhost:5000/restaurants/${id}/reviews`, {
-        method: 'POST',
+        method: existingReview ? 'PUT' : 'POST', 
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -58,13 +68,13 @@ const ReviewForm = ({ onSubmit, data }) => {
         throw new Error(result.error || 'Failed to submit the review')
       }
 
-      setMessage('Review submitted successfully!')
-      onSubmit(formData); 
+      setMessage(existingReview ? 'Review updated successfully!' : 'Review submitted successfully!')
+      onSubmit(formData)
       setFormData({
         rating: 0,
         categories: { food: false, service: false, ambiance: false },
         reviewText: '',
-      });
+      })
     } catch (err) {
       setError(err.message || 'An error occurred while submitting the review.')
     }
@@ -72,11 +82,10 @@ const ReviewForm = ({ onSubmit, data }) => {
 
   return (
     <div className="review-form-container">
-      <h1>Write a Review for {restaurant?.name || "the restaurant"}</h1>
+      <h1>{existingReview ? 'Edit Your Review' : `Write a Review for ${restaurant?.name || 'the restaurant'}`}</h1>
       {message && <p className="success-message">{message}</p>}
       {error && <p className="error-message">{error}</p>}
       <form className="review-form" onSubmit={handleSubmit}>
-        
         <div className="rating">
           {[1, 2, 3, 4, 5].map((star) => (
             <span
@@ -94,27 +103,16 @@ const ReviewForm = ({ onSubmit, data }) => {
 
         <div className="categories">
           <p>A few things to consider in your review:</p>
-          <button
-            type="button"
-            className={`category ${formData.categories.food ? 'active' : ''}`}
-            onClick={() => handleCategoryChange('food')}
-          >
-            Food
-          </button>
-          <button
-            type="button"
-            className={`category ${formData.categories.service ? 'active' : ''}`}
-            onClick={() => handleCategoryChange('service')}
-          >
-            Service
-          </button>
-          <button
-            type="button"
-            className={`category ${formData.categories.ambiance ? 'active' : ''}`}
-            onClick={() => handleCategoryChange('ambiance')}
-          >
-            Ambiance
-          </button>
+          {['food', 'service', 'ambiance'].map((category) => (
+            <button
+              key={category}
+              type="button"
+              className={`category ${formData.categories[category] ? 'active' : ''}`}
+              onClick={() => handleCategoryChange(category)}
+            >
+              {category.charAt(0).toUpperCase() + category.slice(1)}
+            </button>
+          ))}
         </div>
 
         <textarea
@@ -125,7 +123,7 @@ const ReviewForm = ({ onSubmit, data }) => {
         />
 
         <button type="submit" className="submit-button">
-          Post Review
+          {existingReview ? 'Update Review' : 'Post Review'}
         </button>
       </form>
     </div>
