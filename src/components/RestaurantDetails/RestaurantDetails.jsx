@@ -8,6 +8,10 @@ const RestaurantDetails = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(true);
 
+  const [editingReview, setEditingReview] = useState(null);
+  const [editDetails, setEditDetails] = useState('');
+  const [editRating, setEditRating] = useState(0);
+
   useEffect(() => {
     const fetchRestaurant = async () => {
       try {
@@ -29,6 +33,78 @@ const RestaurantDetails = () => {
     fetchRestaurant();
   }, [id]);
 
+  const handleEditReview = (review) => {
+    setEditingReview(review);
+    setEditDetails(review.details);
+    setEditRating(review.rating);
+  };
+
+  const handleEditSubmit = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/reviews/restaurant/${restaurant._id}/reviews/${editingReview._id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: JSON.stringify({ details: editDetails, rating: editRating }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to update review.');
+      }
+
+      const updatedReview = await response.json();
+
+      setRestaurant((prev) => ({
+        ...prev,
+        reviews: prev.reviews.map((review) =>
+          review._id === updatedReview._id ? updatedReview : review
+        ),
+      }));
+
+      setEditingReview(null);
+    } catch (error) {
+      console.error('Error updating review:', error.message);
+    }
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    
+    try {
+      const response = await fetch(`http://localhost:3000/reviews/${reviewId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (!response.ok) {
+        const contentType = response.headers.get('Content-Type');
+        let errorData;
+        if (contentType && contentType.includes('application/json')) {
+          errorData = await response.json();
+        } else {
+          errorData = { error: 'Unexpected error occurred.' };
+        }
+        throw new Error(errorData.error || 'Failed to delete review.');
+      }
+
+      setRestaurant((prev) => ({
+        ...prev,
+        reviews: prev.reviews.filter((review) => review._id !== reviewId),
+      }));
+
+      console.log('Review deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting review:', error.message);
+    }
+  };
+
   if (loading) {
     return <h2>Loading...</h2>;
   }
@@ -41,38 +117,7 @@ const RestaurantDetails = () => {
     return <h2>Restaurant not found</h2>;
   }
 
-  // Ensure reviews and other properties are safely accessed
   const reviews = restaurant.reviews || [];
-
-  const handleEditReview = (review) => {
-    console.log('Edit review:', review);
-  };
-
-  const handleDeleteReview = async (reviewId) => {
-    try {
-      const response = await fetch(`http://localhost:3000/reviews/${reviewId}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to delete review.');
-      }
-
-      // Logic to update the UI after successful deletion
-      setRestaurant((prev) => ({
-        ...prev,
-        reviews: reviews.filter((review) => review._id !== reviewId),
-      }));
-
-      console.log('Review deleted successfully.');
-    } catch (error) {
-      console.error('Error deleting review:', error.message);
-    }
-  };
 
   return (
     <div className="restaurant-details">
@@ -114,17 +159,17 @@ const RestaurantDetails = () => {
           </Link>
         </div>
         <div className="restaurant-photos">
-          {restaurant.photos && restaurant.photos.length > 0 ? (
+     {    restaurant.photos && restaurant.photos.length > 0 ? (
             restaurant.photos.map((photo, index) => (
-              <img
-                key={index}
-                src={photo}
-                alt={`Restaurant ${index + 1}`}
-                className="restaurant-photo"
-              />
-            ))
-          ) : (
-            <p>No photos available</p>
+          <img
+        key={index}
+        src={photo}
+        alt={`Photo ${index + 1}`}
+        className="restaurant-photo"
+      />
+    ))
+  ) : (
+    <p>No photos available</p>
           )}
           {restaurant.photos && restaurant.photos.length > 0 && (
             <Link to="#" className="see-more-link">
@@ -148,27 +193,49 @@ const RestaurantDetails = () => {
       <h2>Featured Reviews</h2>
       <div className="featured-reviews">
         {reviews.length > 0 ? (
-          reviews.slice(0, 3).map((review, index) => (
-            <div key={index} className="review">
-               <p>
-                <strong>{review.user?.username || 'Anonymous'}</strong> 
-              </p>
-              <p>{review.details}</p>
-              <p>Rating: {review.rating}</p>
-              <div className="review-actions">
-                <button
-                  onClick={() => handleEditReview(review)}
-                  className="action-link"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteReview(review._id)}
-                  className="action-link delete"
-                >
-                  Delete
-                </button>
-              </div>
+          reviews.map((review) => (
+            <div key={review._id} className="review">
+              {editingReview && editingReview._id === review._id ? (
+                <div className="edit-review-form">
+                  <textarea
+                    value={editDetails}
+                    onChange={(e) => setEditDetails(e.target.value)}
+                    placeholder="Edit your review"
+                  />
+                  <input
+                    type="number"
+                    value={editRating}
+                    onChange={(e) => setEditRating(e.target.value)}
+                    min="1"
+                    max="5"
+                    placeholder="Edit your rating"
+                  />
+                  <button onClick={handleEditSubmit}>Save</button>
+                  <button onClick={() => setEditingReview(null)}>Cancel</button>
+                </div>
+              ) : (
+                <>
+                  <p>
+                    <strong>{review.user?.username || 'Anonymous'}</strong>
+                  </p>
+                  <p>{review.details}</p>
+                  <p>Rating: {review.rating}</p>
+                  <div className="review-actions">
+                    <button
+                      onClick={() => handleEditReview(review)}
+                      className="action-link"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteReview(review._id)}
+                      className="action-link delete"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           ))
         ) : (

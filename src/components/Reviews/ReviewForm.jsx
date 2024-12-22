@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './ReviewForm.css';
 
-const ReviewForm = ({ onSubmit, data, existingReview }) => {
+const ReviewForm = ({ onSubmit, data = [], existingReview }) => {
   const { id } = useParams();
   const restaurant = data.find((rest) => rest.id === parseInt(id));
 
   const [formData, setFormData] = useState({
     rating: 0,
     categories: { food: false, service: false, ambiance: false },
-    reviewText: '',
+    details: '',
   });
 
   const [message, setMessage] = useState('');
@@ -29,7 +29,7 @@ const ReviewForm = ({ onSubmit, data, existingReview }) => {
   const ratingDescriptions = ['Not Good', 'Not the Best', 'Decent', 'Good', 'Amazing'];
 
   const handleRatingChange = (rating) => {
-    setFormData({ ...formData, rating })
+    setFormData({ ...formData, rating });
   };
 
   const handleCategoryChange = (category) => {
@@ -40,47 +40,47 @@ const ReviewForm = ({ onSubmit, data, existingReview }) => {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, details: e.target.value })
+    setFormData({ ...formData, details: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (formData.rating === 0) {
-      alert('Please select a rating')
+      alert('Please select a rating');
       return;
     }
 
     try {
-      // Post review to the backend
-        const url = existingReview
-        ? `http://localhost:3000/reviews/restaurant/${id}/reviews/${existingReview._id}` 
+      const url = existingReview
+        ? `http://localhost:3000/reviews/restaurant/${id}/reviews/${existingReview._id}`
         : `http://localhost:3000/reviews/restaurant/${id}/reviews`;
-        const method = existingReview ? 'PUT' : 'POST';
+      const method = existingReview ? 'PUT' : 'POST';
+
       const response = await fetch(url, {
-          method: method,
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-      const result = await response.json()
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to submit the review')
+        throw new Error(result.error || 'Failed to submit the review');
       }
 
-      setMessage(existingReview ? 'Review updated successfully!' : 'Review submitted successfully!')
-      onSubmit(formData)
+      setMessage(existingReview ? 'Review updated successfully!' : 'Review submitted successfully!');
+      onSubmit(result); // Pass the updated or new review data back to the parent component
       setFormData({
         rating: 0,
         categories: { food: false, service: false, ambiance: false },
-        reviewText: '',
-      })
+        details: '',
+      });
     } catch (err) {
-      setError(err.message || 'An error occurred while submitting the review.')
+      setError(err.message || 'An error occurred while submitting the review.');
     }
   };
 

@@ -22,7 +22,9 @@ const Search = ({ placeholder }) => {
       setErrorMessage('');
 
       // Fetch search results from the backend
-      const response = await fetch(`http://localhost:3000/restaurants/search?query=${encodeURIComponent(value)}`);
+      const response = await fetch(
+        `http://localhost:3000/restaurants/search?query=${encodeURIComponent(value)}`
+      );
       const data = await response.json();
 
       if (!response.ok) {
@@ -55,11 +57,13 @@ const Search = ({ placeholder }) => {
           <li className="loading-message">Loading results...</li>
         ) : filteredResults.length > 0 ? (
           filteredResults.map((result) => (
-            <li key={result.id} className="search-result-item">
+            // Updated the key to use `_id`
+            <li key={result._id} className="search-result-item">
               <Link to={`/restaurants/${result._id}`}>
                 <h3>{result.name}</h3>
                 <p><strong>Cuisine:</strong> {result.cuisine}</p>
-                <p><strong>Location:</strong> {result.location}</p>
+                {/* Fallback if location is missing */}
+                <p><strong>Location:</strong> {result.location || 'Location not available'}</p>
               </Link>
             </li>
           ))
