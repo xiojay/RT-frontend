@@ -7,8 +7,9 @@ const SavedRestaurants = () => {
 
   useEffect(() => {
     const fetchSavedRestaurants = async () => {
+    const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
       try {
-        const response = await fetch('http://localhost:3000/saved-restaurants', {
+        const response = await fetch(`${API_BASE_URL}/saved-restaurants`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -31,8 +32,9 @@ const SavedRestaurants = () => {
     fetchSavedRestaurants();
   }, []);
   const handleSave = async (restaurantId) => {
+  const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
     try{ 
-      const res = await fetch (`http://localhost:3000/restaurants/${restaurantId}/save`, {
+      const res = await fetch (`${API_BASE_URL}/restaurants/${restaurantId}/save`, {
         method: 'POST',
         headers: {Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content Type': 'application/json',

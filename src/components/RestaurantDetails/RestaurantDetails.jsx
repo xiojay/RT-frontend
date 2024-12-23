@@ -14,8 +14,10 @@ const RestaurantDetails = () => {
 
   useEffect(() => {
     const fetchRestaurant = async () => {
+    const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
+
       try {
-        const response = await fetch(`http://localhost:3000/restaurants/${id}`);
+        const response = await fetch(`${API_BASE_URL}/restaurants/${id}`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch restaurant details');
@@ -40,9 +42,10 @@ const RestaurantDetails = () => {
   };
 
   const handleEditSubmit = async () => {
+  const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;  
     try {
       const response = await fetch(
-        `http://localhost:3000/reviews/restaurant/${restaurant._id}/reviews/${editingReview._id}`,
+        `${API_BASE_URL}/reviews/restaurant/${restaurant._id}/reviews/${editingReview._id}`,
         {
           method: 'PUT',
           headers: {
@@ -74,9 +77,9 @@ const RestaurantDetails = () => {
   };
 
   const handleDeleteReview = async (reviewId) => {
-    
+    const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;  
     try {
-      const response = await fetch(`http://localhost:3000/reviews/${reviewId}`, {
+      const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -10,8 +10,10 @@ const Dashboard = () => {
     if (!user) return;
 
     const fetchSavedRestaurants = async () => {
+
+    const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
       try {
-        const response = await fetch('http://localhost:3000/saved-restaurants', {
+        const response = await fetch(`${API_BASE_URL}/saved-restaurants`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },

@@ -7,8 +7,9 @@ const ReviewItem = ({ review, onEdit, onDelete }) => {
   const [successMessage, setSuccessMessage] = useState('');
 
   const handleEdit = async (updatedReview) => {
+    const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;  
     try {
-      const response = await fetch(`http://localhost:3000/reviews/${review.id}`, {
+      const response = await fetch(`${API_BASE_URL}/reviews/${review.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -32,8 +33,9 @@ const ReviewItem = ({ review, onEdit, onDelete }) => {
   };
 
   const handleDelete = async () => {
+  const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
     try {
-      const response = await fetch(`http://localhost:3000/reviews/${review.id}`, {
+      const response = await fetch(`${API_BASE_URL}/reviews/${review.id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`, 

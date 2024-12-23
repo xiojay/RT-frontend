@@ -10,8 +10,9 @@ const Reviews = ({ restaurantId }) => {
   // Fetch reviews from the backend
   useEffect(() => {
     const fetchReviews = async () => {
+    const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;   
       try {
-        const response = await fetch(`http://localhost:3000/restaurant/${restaurantId}/reviews`);
+        const response = await fetch(`${API_BASE_URL}/restaurant/${restaurantId}/reviews`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -29,8 +30,9 @@ const Reviews = ({ restaurantId }) => {
 
   // Add a new review
   const addReview = async (newReview) => {
+  const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
     try {
-      const response = await fetch(`http://localhost:3000/restaurant/${restaurantId}/reviews`, {
+      const response = await fetch(`${API_BASE_URL}/restaurant/${restaurantId}/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,8 +56,9 @@ const Reviews = ({ restaurantId }) => {
 
   // Update an existing review
   const updateReview = async (id, updatedReview) => {
+  const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
     try {
-      const response = await fetch(`http://localhost:3000/reviews/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/reviews/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -82,8 +85,9 @@ const Reviews = ({ restaurantId }) => {
 
   // Delete a review
   const deleteReview = async (id) => {
+  const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
     try {
-      const response = await fetch(`http://localhost:3000/reviews/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/reviews/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

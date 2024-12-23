@@ -45,7 +45,7 @@ const ReviewForm = ({ onSubmit, data = [], existingReview }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
     if (formData.rating === 0) {
       alert('Please select a rating');
       return;
@@ -53,8 +53,8 @@ const ReviewForm = ({ onSubmit, data = [], existingReview }) => {
 
     try {
       const url = existingReview
-        ? `http://localhost:3000/reviews/restaurant/${id}/reviews/${existingReview._id}`
-        : `http://localhost:3000/reviews/restaurant/${id}/reviews`;
+        ? `${API_BASE_URL}/reviews/restaurant/${id}/reviews/${existingReview._id}`
+        : `${API_BASE_URL}/reviews/restaurant/${id}/reviews`;
       const method = existingReview ? 'PUT' : 'POST';
 
       const response = await fetch(url, {

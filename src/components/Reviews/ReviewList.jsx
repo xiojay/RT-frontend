@@ -9,8 +9,9 @@ const ReviewList = ({ restaurantId, onEdit, onDelete }) => {
   // Fetch reviews from the backend
   useEffect(() => {
     const fetchReviews = async () => {
+      const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
       try {
-        const response = await fetch(`http://localhost:3000/restaurant/${restaurantId}/reviews`);
+        const response = await fetch(`${API_BASE_URL}/restaurant/${restaurantId}/reviews`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch reviews');

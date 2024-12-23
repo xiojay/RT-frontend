@@ -7,8 +7,9 @@ const Landing = () => {
 
   useEffect(() => {
     const fetchFeaturedRestaurants = async () => {
+    const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL; 
       try {
-        const response = await fetch('http://localhost:3000/restaurant/featured');
+        const response = await fetch(`${API_BASE_URL}/restaurant/featured`);
 
         const data = await response.json();
 

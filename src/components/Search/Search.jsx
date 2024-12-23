@@ -20,10 +20,11 @@ const Search = ({ placeholder }) => {
     try {
       setLoading(true);
       setErrorMessage('');
+      const API_BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
       // Fetch search results from the backend
       const response = await fetch(
-        `http://localhost:3000/restaurants/search?query=${encodeURIComponent(value)}`
+        `${API_BASE_URL}/restaurants/search?query=${encodeURIComponent(value)}`
       );
       const data = await response.json();
 
